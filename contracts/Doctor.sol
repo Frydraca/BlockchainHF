@@ -1,11 +1,10 @@
 pragma solidity >=0.5.0 <0.9.0;
 import "./MedicalFacility.sol";
 
-contract Doctor is MedicalFacility{
-    
-    function isDoctor() public view returns(bool) {
-        for (uint i=0; i<doctors.length; i++){
-            if (doctors[i] == msg.sender){
+contract Doctor is MedicalFacility {
+    function isDoctor() public view returns (bool) {
+        for (uint256 i = 0; i < doctors.length; i++) {
+            if (doctors[i] == msg.sender) {
                 return true;
             }
         }
@@ -17,16 +16,26 @@ contract Doctor is MedicalFacility{
         _;
     }
 
-    function issueVaccinationSlot(VTypes _vaccineType, uint _date) public onlyDoctor {
+    function issueVaccinationSlot(
+        VTypes _vaccineType,
+        uint256 _date,
+        address patient
+    ) public onlyDoctor {
         uint16 remainingBasedOnType;
-        if(_vaccineType == VTypes.Alma){
+        if (_vaccineType == VTypes.Alma) {
             remainingBasedOnType = 1;
-        }else if (_vaccineType == VTypes.Citrom) {
+        } else if (_vaccineType == VTypes.Citrom) {
             remainingBasedOnType = 3;
-        }else{
+        } else {
             remainingBasedOnType = 2;
         }
-        _createVaccinationSlot(_vaccineType, _date, remainingBasedOnType, true);
+        uint256 vaccineId =
+            _createVaccinationSlot(
+                _vaccineType,
+                _date,
+                remainingBasedOnType,
+                true
+            );
+        ownerToVaccine[patient] = vaccineId;
     }
-
 }
