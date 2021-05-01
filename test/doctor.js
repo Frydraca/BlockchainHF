@@ -6,7 +6,9 @@ contract("Doctor", async (accounts) => {
     date.setHours(date.getHours() + 1);
     const doc = await Doctor.deployed();
 
+    // The tests are run from accounts[0], important because we need a doctor
     await doc.setUpDoctors([accounts[0]]);
+
     await doc.issueVaccinationSlot(0, date.getTime(), accounts[1]);
     let slot = await doc.vaccinationSlots.call(0);
     let vaccineOfPatient = await doc.ownerToVaccine.call(accounts[1]);
