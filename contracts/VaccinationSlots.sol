@@ -22,5 +22,6 @@ contract VaccinationSlots is Doctor {
         uint temp = ownerToVaccine[msg.sender];
         ownerToVaccine[msg.sender] = ownerToVaccine[_sendTo];
         ownerToVaccine[_sendTo] = temp;
+        delete requests[_sendTo];
     }
 }

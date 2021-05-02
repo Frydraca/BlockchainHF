@@ -1,4 +1,5 @@
 const VaccinationSlots = artifacts.require("VaccinationSlots");
+const truffleAssert = require("truffle-assertions");
 
 contract("VaccinationSlots", async (accounts) => {
   let date1;
@@ -53,6 +54,23 @@ contract("VaccinationSlots", async (accounts) => {
       Number(slotOfAcc2.date),
       date1.getTime(),
       "wrong date for account 2"
+    );
+  });
+
+  it("shouldn't trade without request", async () => {
+    await truffleAssert.reverts(
+      vS.trade(accounts[1], {
+        from: accounts[2],
+      })
+    );
+  });
+
+  it("shouldn't trade untradeable vaccines", async () => {
+    await vS.injectVaccine(accounts[2], { from: accounts[0] });
+    await truffleAssert.reverts(
+      vS.requestTrade(accounts[1], {
+        from: accounts[2],
+      })
     );
   });
 });
