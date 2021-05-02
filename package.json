@@ -1,0 +1,22 @@
+{
+  "name": "blockchainhf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Frydraca/BlockchainHF.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Frydraca/BlockchainHF/issues"
+  },
+  "homepage": "https://github.com/Frydraca/BlockchainHF#readme",
+  "dependencies": {
+    "truffle-assertions": "^0.9.2"
+  }
+}
