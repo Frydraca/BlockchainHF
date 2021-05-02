@@ -18,6 +18,22 @@ contract MedicalFacility is MyOwnable {
     mapping(address => uint256) public ownerToVaccine;
     mapping(address => address) public requests;
 
+    function isValidPatient() public view returns (bool) {
+        if (
+            ownerToVaccine[msg.sender] != 0 &&
+            vaccinationSlots[ownerToVaccine[msg.sender]].validity
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    modifier hasValidVaccine() {
+        require(isValidPatient());
+        _;
+    }
+
     function _createVaccinationSlot(
         VTypes _vaccineType,
         uint256 _date,

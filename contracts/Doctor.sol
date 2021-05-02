@@ -38,4 +38,23 @@ contract Doctor is MedicalFacility {
             );
         ownerToVaccine[patient] = vaccineId;
     }
+
+    function injectVaccine() external hasValidVaccine {
+        VaccinationSlot memory vaccine =
+            vaccinationSlots[ownerToVaccine[msg.sender]];
+
+        if (vaccine.remaining <= 1) {
+            delete ownerToVaccine[msg.sender];
+        } else {
+            uint256 vaccineId =
+                _createVaccinationSlot(
+                    vaccine.vaccineType,
+                    vaccine.date,
+                    vaccine.remaining - 1,
+                    false
+                );
+            ownerToVaccine[msg.sender] = vaccineId;
+        }
+        vaccine.validity = false;
+    }
 }
