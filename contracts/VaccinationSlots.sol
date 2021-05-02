@@ -3,18 +3,24 @@ import "./Doctor.sol";
 
 contract VaccinationSlots is Doctor {
 
-    modifier hasRequest(address from) {
-        require(requests[from] == msg.sender);
+    modifier hasRequest(address _from) {
+        require(requests[_from] == msg.sender);
         _;
     }
 
-    function requestTrade(address reqFrom) external hasValidVaccine {
-        requests[msg.sender] = reqFrom;
+    modifier vaccineTradeable(){
+        VaccinationSlot memory vaccine = vaccinationSlots[ownerToVaccine[msg.sender]];
+        require(vaccine.tradeable);
+        _;
     }
 
-    function trade(address sendTo) external hasValidVaccine hasRequest(sendTo){
+    function requestTrade(address _reqFrom) external hasValidVaccine(msg.sender) vaccineTradeable {
+        requests[msg.sender] = _reqFrom;
+    }
+
+    function trade(address _sendTo) external hasValidVaccine(msg.sender) hasRequest(_sendTo) vaccineTradeable{
         uint temp = ownerToVaccine[msg.sender];
-        ownerToVaccine[msg.sender] = ownerToVaccine[sendTo];
-        ownerToVaccine[sendTo] = temp;
+        ownerToVaccine[msg.sender] = ownerToVaccine[_sendTo];
+        ownerToVaccine[_sendTo] = temp;
     }
 }
