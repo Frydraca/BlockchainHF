@@ -3,7 +3,7 @@ pragma solidity >=0.5.0 <0.9.0;
 import "./MyOwnable.sol";
 
 contract MedicalFacility is MyOwnable {
-    enum VTypes {Alma, Barack, Citrom}
+    enum VTypes {Zero, Alma, Barack, Citrom}
 
     struct VaccinationSlot {
         VTypes vaccineType;
@@ -17,6 +17,12 @@ contract MedicalFacility is MyOwnable {
     address[] internal doctors;
     mapping(address => uint256) public ownerToVaccine;
     mapping(address => address) public requests;
+
+    constructor() public MyOwnable() {
+        vaccinationSlots.push(
+            VaccinationSlot(VTypes.Zero, 0, 0, false, false)
+        );
+    }
 
     function isValidPatient() public view returns (bool) {
         if (
