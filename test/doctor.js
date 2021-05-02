@@ -53,6 +53,11 @@ contract("Doctor", async (accounts) => {
       secondDate.getTime(),
       "wrong vaccine date"
     );
+    assert.equal(
+      vaccineOfPatient.tradeable,
+      false,
+      "new vaccine can still be traded"
+    );
     assert.equal(oldVaccine.validity, false, "old vaccine is still valid");
   });
 
