@@ -43,7 +43,6 @@ contract Doctor is MedicalFacility {
         external
         hasValidVaccine(_patient)
     {
-        uint256 oldVaccineId = ownerToVaccine[_patient];
         VaccinationSlot storage vaccine =
             vaccinationSlots[ownerToVaccine[_patient]];
 
@@ -59,7 +58,6 @@ contract Doctor is MedicalFacility {
                 );
             ownerToVaccine[_patient] = vaccineId;
         }
-        // setVaccineValidity(oldVaccineId, false);
         vaccine.validity = false;
     }
 }
