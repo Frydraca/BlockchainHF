@@ -63,4 +63,8 @@ contract MedicalFacility is MyOwnable {
     function getNumberOfVaccinationSlots() external view returns (uint256) {
         return vaccinationSlots.length;
     }
+
+    function setVaccineValidity(uint256 _vaccineId, bool _state) public {
+        vaccinationSlots[_vaccineId].validity = _state;
+    }
 }

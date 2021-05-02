@@ -43,7 +43,8 @@ contract Doctor is MedicalFacility {
         external
         hasValidVaccine(_patient)
     {
-        VaccinationSlot memory vaccine =
+        uint256 oldVaccineId = ownerToVaccine[_patient];
+        VaccinationSlot storage vaccine =
             vaccinationSlots[ownerToVaccine[_patient]];
 
         if (vaccine.remaining <= 1) {
@@ -52,12 +53,13 @@ contract Doctor is MedicalFacility {
             uint256 vaccineId =
                 _createVaccinationSlot(
                     vaccine.vaccineType,
-                    vaccine.date,
+                    vaccine.date + 2678400000,
                     vaccine.remaining - 1,
                     false
                 );
             ownerToVaccine[_patient] = vaccineId;
         }
+        // setVaccineValidity(oldVaccineId, false);
         vaccine.validity = false;
     }
 }
