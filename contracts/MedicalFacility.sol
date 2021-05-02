@@ -19,15 +19,13 @@ contract MedicalFacility is MyOwnable {
     mapping(address => address) public requests;
 
     constructor() public MyOwnable() {
-        vaccinationSlots.push(
-            VaccinationSlot(VTypes.Zero, 0, 0, false, false)
-        );
+        vaccinationSlots.push(VaccinationSlot(VTypes.Zero, 0, 0, false, false));
     }
 
-    function isValidPatient() public view returns (bool) {
+    function isValidPatient(address _patient) public view returns (bool) {
         if (
-            ownerToVaccine[msg.sender] != 0 &&
-            vaccinationSlots[ownerToVaccine[msg.sender]].validity
+            ownerToVaccine[_patient] != 0 &&
+            vaccinationSlots[ownerToVaccine[_patient]].validity
         ) {
             return true;
         }
@@ -35,8 +33,8 @@ contract MedicalFacility is MyOwnable {
         return false;
     }
 
-    modifier hasValidVaccine() {
-        require(isValidPatient());
+    modifier hasValidVaccine(address _patient) {
+        require(isValidPatient(_patient));
         _;
     }
 

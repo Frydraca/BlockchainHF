@@ -19,7 +19,7 @@ contract Doctor is MedicalFacility {
     function issueVaccinationSlot(
         VTypes _vaccineType,
         uint256 _date,
-        address patient
+        address _patient
     ) public onlyDoctor {
         uint16 remainingBasedOnType;
         if (_vaccineType == VTypes.Alma) {
@@ -36,15 +36,18 @@ contract Doctor is MedicalFacility {
                 remainingBasedOnType,
                 true
             );
-        ownerToVaccine[patient] = vaccineId;
+        ownerToVaccine[_patient] = vaccineId;
     }
 
-    function injectVaccine() external hasValidVaccine {
+    function injectVaccine(address _patient)
+        external
+        hasValidVaccine(_patient)
+    {
         VaccinationSlot memory vaccine =
-            vaccinationSlots[ownerToVaccine[msg.sender]];
+            vaccinationSlots[ownerToVaccine[_patient]];
 
         if (vaccine.remaining <= 1) {
-            delete ownerToVaccine[msg.sender];
+            delete ownerToVaccine[_patient];
         } else {
             uint256 vaccineId =
                 _createVaccinationSlot(
@@ -53,7 +56,7 @@ contract Doctor is MedicalFacility {
                     vaccine.remaining - 1,
                     false
                 );
-            ownerToVaccine[msg.sender] = vaccineId;
+            ownerToVaccine[_patient] = vaccineId;
         }
         vaccine.validity = false;
     }
