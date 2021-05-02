@@ -1,4 +1,5 @@
 const Doctor = artifacts.require("Doctor");
+const truffleAssert = require("truffle-assertions");
 
 contract("Doctor", async (accounts) => {
   let doc;
@@ -66,5 +67,17 @@ contract("Doctor", async (accounts) => {
 
     assert.equal(vaccineId, 0, "a new vaccine was assigned falsely");
     assert.equal(oldVaccine.validity, false, "old vaccine is still valid");
+  });
+
+  it("injection should fail without valid vaccine", async () => {
+    await truffleAssert.reverts(doc.injectVaccine(accounts[9]));
+  });
+
+  it("vaccine issue should fail if not doctor", async () => {
+    await truffleAssert.reverts(
+      doc.issueVaccinationSlot(2, date.getTime(), accounts[1], {
+        from: accounts[9],
+      })
+    );
   });
 });
