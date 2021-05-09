@@ -42,6 +42,7 @@ contract Doctor is MedicalFacility {
     function injectVaccine(address _patient)
         external
         hasValidVaccine(_patient)
+        onlyDoctor
     {
         VaccinationSlot storage vaccine =
             vaccinationSlots[ownerToVaccine[_patient]];
