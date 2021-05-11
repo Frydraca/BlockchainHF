@@ -22,7 +22,7 @@ contract MedicalFacility is MyOwnable {
         vaccinationSlots.push(VaccinationSlot(VTypes.Zero, 0, 0, false, false));
     }
 
-    function isValidPatient(address _patient) public view returns (bool) {
+    function isValidPatient(address _patient) private view returns (bool) {
         if (
             ownerToVaccine[_patient] != 0 &&
             vaccinationSlots[ownerToVaccine[_patient]].validity

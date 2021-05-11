@@ -2,7 +2,7 @@ pragma solidity >=0.5.0 <0.9.0;
 import "./MedicalFacility.sol";
 
 contract Doctor is MedicalFacility {
-    function isDoctor() public view returns (bool) {
+    function isDoctor() private view returns (bool) {
         for (uint256 i = 0; i < doctors.length; i++) {
             if (doctors[i] == msg.sender) {
                 return true;
